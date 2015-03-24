@@ -46,7 +46,7 @@ Have a question? Feel free to contact me <a href="mailto:hello@gurinderhans.me?S
 
 You added a new feature?
 --------------------
-Send it in right now! I couldn't get more impatient right now!!!
+Send it in right now! I can't wait to see what you've done!
 
 Found a Bug?
 --------------------
