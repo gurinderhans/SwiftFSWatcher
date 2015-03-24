@@ -42,7 +42,7 @@ Three easy steps:
 
 Questions and what not?
 --------------------
-Have a question? Feel free to contact me <a href="mailto:hello@gurinderhans.me?Subject=SwiftFSWatcher-Github" target="_top">Online</a>
+Have a question? Feel free to contact me <a href="mailto:hello@gurinderhans.me?Subject=SwiftFSWatcher-Github" target="_top">online</a>
 
 You added a new feature?
 --------------------
