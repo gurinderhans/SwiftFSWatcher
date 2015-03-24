@@ -1,5 +1,5 @@
 # SwiftFSWatcher
-A simple easy to use / extend File System watcher using Swift
+A simple easy to use `/` extend File System watcher using Swift
 
 
 Example
@@ -52,3 +52,7 @@ Found a Bug?
 --------------------
 Oh No!
 Send in a pull request with the patch (very much appreciated) or just contact me :D
+
+License
+--------------------
+I'll get to this, eventually...
