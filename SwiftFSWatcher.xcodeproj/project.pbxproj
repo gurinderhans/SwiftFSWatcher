@@ -11,6 +11,7 @@
 		41F5C7E61AC12979003504C5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41F5C7E51AC12979003504C5 /* Images.xcassets */; };
 		41F5C7E91AC12979003504C5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41F5C7E71AC12979003504C5 /* MainMenu.xib */; };
 		41F5C7F51AC12979003504C5 /* SwiftFSWatcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F5C7F41AC12979003504C5 /* SwiftFSWatcherTests.swift */; };
+		41F5C8011AC129B7003504C5 /* SwiftFSWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 41F5C8001AC129B7003504C5 /* SwiftFSWatcher.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,9 @@
 		41F5C7EE1AC12979003504C5 /* SwiftFSWatcherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftFSWatcherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F5C7F31AC12979003504C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		41F5C7F41AC12979003504C5 /* SwiftFSWatcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFSWatcherTests.swift; sourceTree = "<group>"; };
+		41F5C7FF1AC129B7003504C5 /* SwiftFSWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftFSWatcher.h; sourceTree = "<group>"; };
+		41F5C8001AC129B7003504C5 /* SwiftFSWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwiftFSWatcher.m; sourceTree = "<group>"; };
+		41F5C8021AC12AB1003504C5 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,10 +77,12 @@
 		41F5C7E01AC12979003504C5 /* SwiftFSWatcher */ = {
 			isa = PBXGroup;
 			children = (
+				41F5C7FE1AC12995003504C5 /* Sources */,
 				41F5C7E31AC12979003504C5 /* AppDelegate.swift */,
 				41F5C7E51AC12979003504C5 /* Images.xcassets */,
 				41F5C7E71AC12979003504C5 /* MainMenu.xib */,
 				41F5C7E11AC12979003504C5 /* Supporting Files */,
+				41F5C8021AC12AB1003504C5 /* Bridging-Header.h */,
 			);
 			path = SwiftFSWatcher;
 			sourceTree = "<group>";
@@ -104,6 +110,15 @@
 				41F5C7F31AC12979003504C5 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		41F5C7FE1AC12995003504C5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				41F5C7FF1AC129B7003504C5 /* SwiftFSWatcher.h */,
+				41F5C8001AC129B7003504C5 /* SwiftFSWatcher.m */,
+			);
+			name = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F5C8011AC129B7003504C5 /* SwiftFSWatcher.m in Sources */,
 				41F5C7E41AC12979003504C5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,6 +340,7 @@
 				INFOPLIST_FILE = SwiftFSWatcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = SwiftFSWatcher/SwiftFSWatcher.h;
 			};
 			name = Debug;
 		};
@@ -335,6 +352,7 @@
 				INFOPLIST_FILE = SwiftFSWatcher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = SwiftFSWatcher/SwiftFSWatcher.h;
 			};
 			name = Release;
 		};

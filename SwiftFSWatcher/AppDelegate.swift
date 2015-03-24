@@ -16,6 +16,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
+        let watcher = SwiftFSWatcher.createWatcher()
+        
+        let pathsArray = ["/Users/you/Documents", "/Users/you/Desktop"]
+        watcher.paths = NSMutableArray(array: pathsArray)
+        watcher.watch()
+        
+        watcher.onFileChange = {numEvents, changedPaths in
+            println("recieved: \(numEvents) events")
+            println("changedPaths: \(changedPaths)")
+        }
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
