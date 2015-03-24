@@ -35,7 +35,7 @@ Create more than one
 Getting Started
 --------------------
 Three easy steps:
-+ Add the `.m` & `.h` files in `Sources/` somewhere in your project
++ Add the `.m` & `.h` files in `Sources/` to somewhere in your project
 + Create a Bridging-Header file and import the header file as:
   * `#import "SwiftFSWatcher.h"`
 + Use it in your app
@@ -43,6 +43,10 @@ Three easy steps:
 Questions and what not?
 --------------------
 Have a question? Feel free to contact me <a href="mailto:hello@gurinderhans.me?Subject=SwiftFSWatcher-Github" target="_top">Online</a>
+
+You added a new feature?
+--------------------
+Send it in right now! I couldn't get more impatient right now!!!
 
 Found a Bug?
 --------------------
