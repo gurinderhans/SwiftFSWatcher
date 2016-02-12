@@ -38,7 +38,9 @@ Three easy steps:
 + Add the `.m` & `.h` files in `Sources/` to somewhere in your project
 + Create a Bridging-Header file and import the header file as:
   * `#import "SwiftFSWatcher.h"`
++ or `pod 'SwiftFSWatcher'`
 + Use it in your app
+
 
 Questions and what not?
 --------------------
