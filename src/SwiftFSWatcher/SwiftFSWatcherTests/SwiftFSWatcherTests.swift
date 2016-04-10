@@ -2,12 +2,12 @@
 //  SwiftFSWatcherTests.swift
 //  SwiftFSWatcherTests
 //
-//  Created by Gurinder Hans on 3/23/15.
-//  Copyright (c) 2015 Gurinder Hans. All rights reserved.
+//  Created by Gurinder Hans on 4/9/16.
+//  Copyright © 2016 Gurinder Hans. All rights reserved.
 //
 
-import Cocoa
 import XCTest
+@testable import SwiftFSWatcher
 
 class SwiftFSWatcherTests: XCTestCase {
     
@@ -23,14 +23,7 @@ class SwiftFSWatcherTests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
 }
