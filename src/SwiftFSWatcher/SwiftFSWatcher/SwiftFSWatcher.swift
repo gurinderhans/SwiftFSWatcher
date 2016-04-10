@@ -6,30 +6,38 @@
 //  Copyright © 2016 Gurinder Hans. All rights reserved.
 //
 
-import Foundation
-
 public class SwiftFSWatcher {
     
-    var watchingPaths:[String]
+    var watchingPaths: [String]?
     
     var isRunning = false
     
-    var stream:FSEventStreamRef?
+    var stream: FSEventStreamRef?
     
-    public var onChange: ((String) -> ())!
+    var onChangeCallback: ([String] -> Void)?
     
     
     /// MARK: - init methods
     
-    public init(paths: [String]) {
+    public init() {}
+    
+    public convenience init(_ paths: [String]) {
+        self.init()
         self.watchingPaths = paths
     }
     
-    public func watch() {
+    /// MARK: - public methods
+    public func watch(changeCb: ([String] -> Void)?) {
+        
+        guard let paths = watchingPaths else {
+            return
+        }
+        
+        onChangeCallback = changeCb
         
         var context = FSEventStreamContext(version: 0, info: UnsafeMutablePointer<Void>(unsafeAddressOf(self)), retain: nil, release: nil, copyDescription: nil)
         
-        stream = FSEventStreamCreate(kCFAllocatorDefault, innerEventCallback, &context, watchingPaths, FSEventStreamEventId(kFSEventStreamEventIdSinceNow), 1.0, UInt32(kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents))
+        stream = FSEventStreamCreate(kCFAllocatorDefault, innerEventCallback, &context, paths, FSEventStreamEventId(kFSEventStreamEventIdSinceNow), 0, UInt32(kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents))
         
         FSEventStreamScheduleWithRunLoop(stream!, NSRunLoop.currentRunLoop().getCFRunLoop(), kCFRunLoopDefaultMode)
         FSEventStreamStart(stream!)
@@ -38,15 +46,13 @@ public class SwiftFSWatcher {
     }
     
     
+    /// MARK: - private closures
+    
     private let innerEventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef, contextInfo: UnsafeMutablePointer<Void>, numEvents: Int, eventPaths: UnsafeMutablePointer<Void>, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) in
         
-        let fileSystemWatcher: SwiftFSWatcher = unsafeBitCast(contextInfo, SwiftFSWatcher.self)
-        
         let paths = unsafeBitCast(eventPaths, NSArray.self) as! [String]
-        fileSystemWatcher.onChange(paths)
+        let fsWatcher: SwiftFSWatcher = unsafeBitCast(contextInfo, SwiftFSWatcher.self)
+        fsWatcher.onChangeCallback?(paths)
     }
     
-    private func onChange(eventPaths: [String]) {
-        print("eventPaths:  \(eventPaths)")
-    }
 }

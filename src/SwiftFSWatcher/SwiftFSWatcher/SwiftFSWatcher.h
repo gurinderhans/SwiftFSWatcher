@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <CoreServices/CoreServices.h>
 
 //! Project version number for SwiftFSWatcher.
 FOUNDATION_EXPORT double SwiftFSWatcherVersionNumber;
