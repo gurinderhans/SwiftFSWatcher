@@ -29,6 +29,7 @@ public class SwiftFSWatcher {
     }
     
     // MARK: - API public methods
+    
     public func watch(changeCb: ([FileEvent] -> Void)?) {
         
         guard let paths = watchingPaths else {
@@ -70,6 +71,7 @@ public class SwiftFSWatcher {
     }
     
     // MARK: - [Private] Closure passed into `FSEventStream` and is called on new file event
+    
     private let innerEventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef, contextInfo: UnsafeMutablePointer<Void>, numEvents: Int, eventPaths: UnsafeMutablePointer<Void>, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) in
         
         let fsWatcher: SwiftFSWatcher = unsafeBitCast(contextInfo, SwiftFSWatcher.self)
