@@ -1,0 +1,10 @@
+framework module SwiftFSWatcher {
+  umbrella header "SwiftFSWatcher.h"
+
+  export *
+  module * { export * }
+}
+
+module SwiftFSWatcher.Swift {
+    header "SwiftFSWatcher-Swift.h"
+}
