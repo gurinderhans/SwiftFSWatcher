@@ -6,7 +6,7 @@
 //  Copyright © 2016 Gurinder Hans. All rights reserved.
 //
 
-public class SwiftFSWatcher {
+@objc public class SwiftFSWatcher : NSObject {
     
     var isRunning = false
     
@@ -19,8 +19,9 @@ public class SwiftFSWatcher {
     
     // MARK: - Init methods
     
-    public init() {
-        // Default init method
+    public override init() {
+        // Default init
+        super.init()
     }
     
     public convenience init(_ paths: [String]) {
@@ -89,7 +90,7 @@ public class SwiftFSWatcher {
     }
 }
 
-public class FileEvent {
+@objc public class FileEvent : NSObject {
     
     public let eventPath: String!
     public let eventFlag: Int!
@@ -100,5 +101,4 @@ public class FileEvent {
         eventFlag = flag
         eventId = id
     }
-    
 }
