@@ -388,6 +388,7 @@
 				410750191CB9BC2800EB5B19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4107501A1CB9BC2800EB5B19 /* Build configuration list for PBXNativeTarget "SwiftFSWatcherTests" */ = {
 			isa = XCConfigurationList;
@@ -396,6 +397,7 @@
 				4107501C1CB9BC2800EB5B19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
