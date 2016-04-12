@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SwiftFSWatcher"
-  s.version      = "1.01"
+  s.version      = "1.02"
   s.summary      = "A simple easy to use / extend File System watcher using Swift."
 
   s.homepage     = "https://github.com/gurinderhans/SwiftFSWatcher"

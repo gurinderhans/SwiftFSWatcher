@@ -81,9 +81,9 @@
         
         var fileEvents = [FileEvent]()
         for i in 0..<numEvents {
-            fileEvents.append(
-                FileEvent(path: paths[i], flag: Int(eventFlags[i]), id: Int(eventIds[i]))
-            )
+            let event = FileEvent(path: paths[i], flag: eventFlags[i], id: eventIds[i])
+            
+            fileEvents.append(event)
         }
         
         fsWatcher.onChangeCallback?(fileEvents)
@@ -92,13 +92,13 @@
 
 @objc public class FileEvent : NSObject {
     
-    public let eventPath: String!
-    public let eventFlag: Int!
-    public let eventId: Int!
+    public var eventPath: String!
+    public var eventFlag: NSNumber!
+    public var eventId: NSNumber!
     
-    init(path: String!, flag: Int!, id: Int!) {
+    public init(path: String!, flag: UInt32!, id: UInt64!) {
         eventPath = path
-        eventFlag = flag
-        eventId = id
+        eventFlag = NSNumber(unsignedInt: flag)
+        eventId = NSNumber(unsignedLongLong: id)
     }
 }
