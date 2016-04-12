@@ -74,6 +74,7 @@ SwiftFSWatcher * s;
 # Installation (two ways)
 
 + Include `pod 'SwiftFSWatcher'` in your Podfile
+    + You'll need to add `use_frameworks!` since the framework is built in Swift.
 
 + Grab the `SwiftFSWatcher.framework` and add it to your project or build the `.framework` yoursleves by downloading this project.
 
