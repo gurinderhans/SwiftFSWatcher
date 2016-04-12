@@ -1,7 +1,7 @@
 # SwiftFSWatcher
 A simple easy to use / extend File System watcher using Swift
 
-# Example
+# Example (Swift)
 
 ```swift
 import Cocoa
@@ -47,6 +47,30 @@ class ViewController: NSViewController {
     }
 }
 ```
+
+# Example (Objective-C)
+```objc
+#import "ViewController.h"
+#import <SwiftFSWatcher/SwiftFSWatcher-Swift.h>
+
+@implementation ViewController
+
+SwiftFSWatcher * s;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    s = [[SwiftFSWatcher alloc] init];
+    
+    s.watchingPaths = [@[@"/path/to/some/folder/", @"/path/to/myFile.txt"] mutableCopy];
+    
+    [s watch:^(NSArray<FileEvent *> * aa) {
+        NSLog(@"changed paths: %@", aa);
+    }];
+}
+@end
+```
+
 # Installation (two ways)
 
 + Include `pod 'SwiftFSWatcher'` in your Podfile
