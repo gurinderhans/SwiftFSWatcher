@@ -8,13 +8,21 @@
 
 @objc public class SwiftFSWatcher : NSObject {
     
-    var isRunning = false
-    
     var stream: FSEventStreamRef?
     
     var onChangeCallback: ([FileEvent] -> Void)?
     
-    public var watchingPaths: [String]?
+    public var watchingPaths: [String]? {
+        didSet {
+            guard stream != nil else {
+                return
+            }
+            
+            pause()
+            stream = nil
+            watch(onChangeCallback)
+        }
+    }
     
     
     // MARK: - Init methods
@@ -49,8 +57,6 @@
         
         FSEventStreamScheduleWithRunLoop(stream!, NSRunLoop.currentRunLoop().getCFRunLoop(), kCFRunLoopDefaultMode)
         FSEventStreamStart(stream!)
-        
-        isRunning = true
     }
     
     public func resume() {
