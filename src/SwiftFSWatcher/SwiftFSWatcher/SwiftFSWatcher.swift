@@ -10,7 +10,7 @@
     
     var stream: FSEventStreamRef?
     
-    var onChangeCallback: ([FileEvent] -> Void)?
+    var onChangeCallback: (([FileEvent]) -> Void)?
     
     public var watchingPaths: [String]? {
         didSet {
@@ -20,7 +20,7 @@
             
             pause()
             stream = nil
-            watch(onChangeCallback)
+            watch(changeCb: onChangeCallback)
         }
     }
     
@@ -39,7 +39,7 @@
     
     // MARK: - API public methods
     
-    public func watch(changeCb: ([FileEvent] -> Void)?) {
+    public func watch(changeCb: (([FileEvent]) -> Void)?) {
         
         guard let paths = watchingPaths else {
             return
@@ -51,11 +51,11 @@
         
         onChangeCallback = changeCb
         
-        var context = FSEventStreamContext(version: 0, info: UnsafeMutablePointer<Void>(unsafeAddressOf(self)), retain: nil, release: nil, copyDescription: nil)
+        var context = FSEventStreamContext(version: 0, info: UnsafeMutableRawPointer(mutating: Unmanaged.passUnretained(self).toOpaque()), retain: nil, release: nil, copyDescription: nil)
         
-        stream = FSEventStreamCreate(kCFAllocatorDefault, innerEventCallback, &context, paths, FSEventStreamEventId(kFSEventStreamEventIdSinceNow), 0, UInt32(kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents))
+        stream = FSEventStreamCreate(kCFAllocatorDefault, innerEventCallback, &context, paths as CFArray, FSEventStreamEventId(kFSEventStreamEventIdSinceNow), 0, UInt32(kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents))
         
-        FSEventStreamScheduleWithRunLoop(stream!, NSRunLoop.currentRunLoop().getCFRunLoop(), kCFRunLoopDefaultMode)
+        FSEventStreamScheduleWithRunLoop(stream!, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode as! CFString)
         FSEventStreamStart(stream!)
     }
     
@@ -79,11 +79,14 @@
     
     // MARK: - [Private] Closure passed into `FSEventStream` and is called on new file event
     
-    private let innerEventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef, contextInfo: UnsafeMutablePointer<Void>, numEvents: Int, eventPaths: UnsafeMutablePointer<Void>, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) in
+    private let innerEventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef, contextInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags: UnsafePointer<FSEventStreamEventFlags>?, eventIds: UnsafePointer<FSEventStreamEventId>?) in
         
-        let fsWatcher: SwiftFSWatcher = unsafeBitCast(contextInfo, SwiftFSWatcher.self)
+        guard let eventFlags = eventFlags, let eventIds = eventIds else {
+            return
+        }
         
-        let paths = unsafeBitCast(eventPaths, NSArray.self) as! [String]
+        let fsWatcher: SwiftFSWatcher = unsafeBitCast(contextInfo, to: SwiftFSWatcher.self)
+        let paths = unsafeBitCast(eventPaths, to: NSArray.self) as! [String]
         
         var fileEvents = [FileEvent]()
         for i in 0..<numEvents {
@@ -104,7 +107,7 @@
     
     public init(path: String!, flag: UInt32!, id: UInt64!) {
         eventPath = path
-        eventFlag = NSNumber(unsignedInt: flag)
-        eventId = NSNumber(unsignedLongLong: id)
+        eventFlag = NSNumber(value: flag)
+        eventId = NSNumber(value: id)
     }
 }
