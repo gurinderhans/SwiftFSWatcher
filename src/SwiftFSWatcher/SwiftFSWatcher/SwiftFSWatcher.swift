@@ -6,105 +6,102 @@
 //  Copyright © 2016 Gurinder Hans. All rights reserved.
 //
 
-@objc public class SwiftFSWatcher : NSObject {
-    
+@objc open class SwiftFSWatcher : NSObject {
+
     var stream: FSEventStreamRef?
-    
-    var onChangeCallback: ([FileEvent] -> Void)?
-    
-    public var watchingPaths: [String]? {
+
+    var onChangeCallback: (([FileEvent]) -> Void)?
+
+    open var watchingPaths: [String]? {
         didSet {
             guard stream != nil else {
                 return
             }
-            
+
             pause()
             stream = nil
             watch(onChangeCallback)
         }
     }
-    
-    
+
+
     // MARK: - Init methods
-    
+
     public override init() {
         // Default init
         super.init()
     }
-    
+
     public convenience init(_ paths: [String]) {
         self.init()
         self.watchingPaths = paths
     }
-    
+
     // MARK: - API public methods
-    
-    public func watch(changeCb: ([FileEvent] -> Void)?) {
-        
+
+    open func watch(_ changeCb: (([FileEvent]) -> Void)?) {
         guard let paths = watchingPaths else {
             return
         }
-        
+
         guard stream == nil else {
             return
         }
-        
+
         onChangeCallback = changeCb
-        
-        var context = FSEventStreamContext(version: 0, info: UnsafeMutablePointer<Void>(unsafeAddressOf(self)), retain: nil, release: nil, copyDescription: nil)
-        
-        stream = FSEventStreamCreate(kCFAllocatorDefault, innerEventCallback, &context, paths, FSEventStreamEventId(kFSEventStreamEventIdSinceNow), 0, UInt32(kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents))
-        
-        FSEventStreamScheduleWithRunLoop(stream!, NSRunLoop.currentRunLoop().getCFRunLoop(), kCFRunLoopDefaultMode)
+
+        var context = FSEventStreamContext(version: 0, info: UnsafeMutableRawPointer(mutating: Unmanaged.passUnretained(self).toOpaque()), retain: nil, release: nil, copyDescription: nil)
+        stream = FSEventStreamCreate(kCFAllocatorDefault, innerEventCallback, &context, paths as CFArray, FSEventStreamEventId(kFSEventStreamEventIdSinceNow), 0, UInt32(kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagFileEvents))
+        FSEventStreamScheduleWithRunLoop(stream!, RunLoop.current.getCFRunLoop(), CFRunLoopMode.defaultMode.rawValue)
         FSEventStreamStart(stream!)
     }
-    
-    public func resume() {
-        
+
+    open func resume() {
         guard stream != nil else {
             return
         }
-        
+
         FSEventStreamStart(stream!)
     }
-    
-    public func pause() {
-        
+
+    open func pause() {
         guard stream != nil else {
             return
         }
-        
+
         FSEventStreamStop(stream!)
     }
-    
+
     // MARK: - [Private] Closure passed into `FSEventStream` and is called on new file event
-    
-    private let innerEventCallback: FSEventStreamCallback = { (stream: ConstFSEventStreamRef, contextInfo: UnsafeMutablePointer<Void>, numEvents: Int, eventPaths: UnsafeMutablePointer<Void>, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) in
-        
-        let fsWatcher: SwiftFSWatcher = unsafeBitCast(contextInfo, SwiftFSWatcher.self)
-        
-        let paths = unsafeBitCast(eventPaths, NSArray.self) as! [String]
-        
+
+    fileprivate let innerEventCallback: FSEventStreamCallback = { (stream, contextInfo, numEvents, eventPaths, eventFlags, eventIds) in
+        guard let eventFlags = eventFlags, let eventIds = eventIds else {
+            return
+        }
+
+        let fsWatcher: SwiftFSWatcher = unsafeBitCast(contextInfo, to: SwiftFSWatcher.self)
+        let paths = unsafeBitCast(eventPaths, to: NSArray.self) as! [String]
+
         var fileEvents = [FileEvent]()
         for i in 0..<numEvents {
             let event = FileEvent(path: paths[i], flag: eventFlags[i], id: eventIds[i])
-            
+
             fileEvents.append(event)
         }
-        
+
         fsWatcher.onChangeCallback?(fileEvents)
     }
 }
 
-@objc public class FileEvent : NSObject {
-    
-    public var eventPath: String!
-    public var eventFlag: NSNumber!
-    public var eventId: NSNumber!
-    
+@objc open class FileEvent : NSObject {
+
+    open var eventPath: String!
+    open var eventFlag: NSNumber!
+    open var eventId: NSNumber!
+
     public init(path: String!, flag: UInt32!, id: UInt64!) {
         eventPath = path
-        eventFlag = NSNumber(unsignedInt: flag)
-        eventId = NSNumber(unsignedLongLong: id)
+        eventFlag = NSNumber(value: flag)
+        eventId = NSNumber(value: id)
     }
 }
