@@ -1,6 +1,11 @@
 # SwiftFSWatcher
 A simple easy to use / extend File System watcher using Swift
 
+### [Swift 3.0 version]
+https://github.com/gurinderhans/SwiftFSWatcher/tree/swift-3.0
+
+Please file any bugs you may encounter in the newer or even the current older version!
+
 # Example (Swift)
 
 ```swift
